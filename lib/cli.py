@@ -67,9 +67,9 @@ def admin():
        click.echo(click.style('Doctor created successfully', fg = 'green'))
 
    elif choice == 6:
-       delete_doctor = click.prompt('Enter Doctor ID_NO',type=int)
+       delete_doctor = click.prompt('Enter Doctor ID_NO')
 
-       doctor_to_delete = session.query(Doctor).get(delete_doctor)
+       doctor_to_delete = session.query(Doctor).filter_by(id_no=delete_doctor).first()
 
        if doctor_to_delete:
             confirmation  = click.confirm(f'Do you want to delete doctor {doctor_to_delete}', default=False)
