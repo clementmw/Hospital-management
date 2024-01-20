@@ -39,6 +39,7 @@ class Doctor(Base):
     id = Column(Integer(), primary_key = True)
     name = Column(String())
     email = Column(String())
+    id_no = Column(Integer())
     app_fees = Column(Integer())
 
     # establish connection to patients
