@@ -59,7 +59,8 @@ class Admin(Base):
     __tablename__ = 'admins'
 
     id = Column(Integer(), primary_key=True)
-    name = Column(String())
+    username = Column(String())
+    password = Column(String())
 
     # establish connection to both patient and doctors
     patient = relationship('Patient', backref='admins')
