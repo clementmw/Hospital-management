@@ -4,7 +4,7 @@ from seed import session
 
 @click.group
 def cli():
-    welcome_message = click.style('Welcome to Hospital Management System\n', fg = 'blue')
+    welcome_message = click.style('WELCOME TO HOSPITAL MANAGEMENT SYSTEM \n', fg = 'green')
     click.echo(welcome_message)
     
 
