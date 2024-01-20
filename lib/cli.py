@@ -43,8 +43,18 @@ def admin():
        if admin:
            click.echo(click.style('Login Successful', fg = 'green'))
        else:
-           click.echo(click.style('Login Failed', fg = 'red'))
-       
+           click.echo(click.style('Login Failed', fg = 'red'))  
+
+   elif choice == 3:
+       doctors = session.query(Doctor).all()
+       for doctor in doctors:
+           click.echo(doctor)
+
+   elif choice == 4:
+       patients = session.query(Patient).all()
+       for patient in patients:
+           click.echo(patient)
+     
    elif choice == 5:
        name = click.prompt('Enter Doctor name')
        email = click.prompt('Enter EmailAddress')
@@ -53,6 +63,22 @@ def admin():
        doctor = Doctor(name = name, email = email, app_fees = fees)
        session.add(doctor)
        session.commit()
+       click.echo(click.style('Doctor created successfully', fg = 'green'))
+
+   elif choice == 6:
+       delete_doctor = click.prompt('Enter Doctor ID' type=int)
+
+       doctor_to_delete = session.query(Doctor).get(delete_doctor)
+       if doctor_to_delete:
+        confirmation  = click.prompt(f'Do you want to delete doctor {doctor_to_delete}')
+        confirmation = confirmation.lower() == 'yes'
+        if confirmation:
+           session.delete(doctor_to_delete)
+           session.commit()
+        click.echo(click.style('Doctor deleted successfully', fg = 'green'))
+       else:
+           click.echo(click.style('Please confirm doctor id', fg = 'red'))
+       
        
 
        

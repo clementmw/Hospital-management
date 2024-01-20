@@ -9,12 +9,12 @@ session = Session()
 
 # to delete after instance
 
-session.query(Doctor).delete()
-session.query(Patient).delete()
-session.query(Admin).delete()
+# session.query(Doctor).delete()
+# session.query(Patient).delete()
+# session.query(Admin).delete()
 
 # Create Faker instance
-# fake = Faker()
+fake = Faker()
 
 # # Function to seed patients
 # def seed_patients():

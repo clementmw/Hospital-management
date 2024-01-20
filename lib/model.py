@@ -51,8 +51,8 @@ class Doctor(Base):
 
     def __repr__ (self):
         return f'name: {self.name}'\
-        f'email: {self.email}'\
-        f'consoltation fees: {self.app_fees}'\
+        f'  Email: {self.email}'\
+        f'  Consoltation fees: KSH{self.app_fees} /='\
 
 
 class Admin(Base):
