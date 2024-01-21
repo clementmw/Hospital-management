@@ -29,7 +29,9 @@ class Patient(Base):
         f'  id_no: {self.id_no}'\
         f'  Gender: {self.gender}'\
         f'  Age: {self.age}'\
-        f'  Appointment: {self.app_date}'
+        f'  Appointment: {self.app_date}'\
+        f'  Doctor {self.doctor_id}'
+    
                   
  # doctors class
      

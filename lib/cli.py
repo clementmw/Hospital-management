@@ -100,12 +100,16 @@ def patient():
        id_no = click.prompt('Enter Patient ID_NO', type=int)
        age = click.prompt('Enter patient age')
        phone_number = click.prompt('Enter patient phone number')
+       doctor_name = click.prompt('Enter doctor name')
 
        existing_id = session.query(Patient).filter_by(id_no = id_no).first()
+       existing_doctor = session.query(Doctor).filter_by(name = doctor_name).first()
        if existing_id:
            click.echo(click.style('Patient already exists {name}', fg = 'red'))
+       elif not existing_doctor:
+           click.echo(click.style('Please confirm Doctor Name', fg = 'red'))
        else:
-            patient = Patient(name = name, gender = gender, id_no = id_no, age = age,phone_number=phone_number)
+            patient = Patient(name = name, gender = gender, id_no = id_no, age = age,phone_number=phone_number, doctor_id = existing_doctor.id)
             session.add(patient)
             session.commit()
             click.echo(click.style('Patient created successfully', fg = 'green'))
