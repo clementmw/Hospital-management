@@ -130,11 +130,57 @@ def patient():
            
 @cli.command()
 def doctor():
-    pass
+    authenticated = False
 
-    
+    while not authenticated:
+        click.echo(click.style('DOCTOR PANEL', fg='blue'))
+        click.echo(click.style('1. Register', fg='red'))
+        click.echo(click.style('2. Login', fg='red'))
 
-    
+        doctor_choice = click.prompt('Enter your choice (1-2)', type=int)
+
+        if doctor_choice == 1:
+            name = click.prompt('Enter Doctor name')
+            email = click.prompt('Enter EmailAddress')
+            uid_no = click.prompt('Enter Doctor UID_NO')
+            fees = click.prompt('Enter doctor charges')
+
+            existing_id = session.query(Doctor).filter_by(id_no=uid_no).first()
+            if existing_id:
+                click.echo(click.style('Doctor already exists', fg='red'))
+            else:
+                doctor = Doctor(name=name, email=email, id_no=uid_no, app_fees=fees)
+                session.add(doctor)
+                session.commit()
+                click.echo(click.style('Doctor Registered successfully', fg='green'))
+
+        elif doctor_choice == 2:
+            doctor_id = click.prompt('Enter Doctor UID_NO', type=int)
+            exists = session.query(Doctor).filter_by(id_no=doctor_id).first()
+
+            if exists:
+                click.echo(click.style(f'Login successful: {exists.name}', fg='green'))
+                authenticated = True
+            else:
+                click.echo(click.style('Doctor not found. Please register.', fg='red'))
+
+    while authenticated:
+        click.echo(click.style("You are authenticated as a doctor. Perform actions here.", fg = 'blue'))
+
+        click.echo(click.style('1. Get your patients', fg = 'red'))
+
+        doc_choice = click.prompt('Enter your choice (1)', type=int)
+
+        if doc_choice == 1:
+            patients = session.query(Patient).filter_by(doctor_id=exists.id)
+            for patient in patients:
+                click.echo(patient)
+        else:
+            click.echo(click.style('Cannot find scheduled appointment', fg = 'red'))
+        break
+        
+
+
    
 
 if __name__ == '__main__':
