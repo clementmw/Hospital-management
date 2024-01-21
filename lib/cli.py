@@ -11,8 +11,7 @@ def cli():
 @cli.command()
 
 def admin():
-   admin =  click.style('ADMIN PANEL', fg = 'blue')
-   click.echo(admin)
+   click.echo(click.style('ADMIN PANEL', fg = 'blue'))
    click.echo(click.style('1. Register', fg = 'red'))
    click.echo(click.style('2. Login', fg = 'red'))
    click.echo(click.style('3. Get all doctors', fg = 'red'))
@@ -39,7 +38,7 @@ def admin():
        username = click.prompt('Enter Username')
        password = click.prompt('Enter Password', hide_input=True)
 
-       admin = session.query(Admin).filter_by(username = username, password = password)
+       admin = session.query(Admin).filter_by(username = username, password = password).first()
        if admin:
            click.echo(click.style('Login Successful', fg = 'green'))
        else:
@@ -58,16 +57,20 @@ def admin():
    elif choice == 5:
        name = click.prompt('Enter Doctor name')
        email = click.prompt('Enter EmailAddress')
-       id_no = click.prompt('Enter Doctor ID_NO')
+       uid_no = click.prompt('Enter Doctor UID_NO')
        fees = click.prompt('Enter doctor charges')
 
-       doctor = Doctor(name = name, email = email, id_no = id_no, app_fees = fees)
-       session.add(doctor)
-       session.commit()
-       click.echo(click.style('Doctor created successfully', fg = 'green'))
+       existing_id = session.query(Doctor).filter_by(id_no = uid_no).first()
+       if existing_id:
+           click.echo(click.style('Doctor already exists', fg = 'red'))
+       else:
+            doctor = Doctor(name = name, email = email, id_no = uid_no, app_fees = fees)
+            session.add(doctor)
+            session.commit()
+            click.echo(click.style('Doctor created successfully', fg = 'green'))   
 
    elif choice == 6:
-       delete_doctor = click.prompt('Enter Doctor ID_NO')
+       delete_doctor = click.prompt('Enter Doctor UID_NO')
 
        doctor_to_delete = session.query(Doctor).filter_by(id_no=delete_doctor).first()
 
@@ -83,22 +86,40 @@ def admin():
        else:
            click.echo(click.style('Doctor does not exist', fg = 'red'))
        
-       
-
-       
-
-
-
-
-
-
-
-
-
-
 @cli.command()
 def patient():
-    pass
+   click.echo(click.style('PATIENT PANEL', fg = 'blue'))
+   click.echo(click.style('1. Register', fg = 'red'))
+   click.echo(click.style('2. Login', fg = 'red'))
+
+   patient_choice = click.prompt('Enter your choice(1-2)', type=int)
+
+   if patient_choice == 1:
+       name = click.prompt('Enter Patient name')
+       gender = click.prompt('Enter Gender male/female')
+       id_no = click.prompt('Enter Patient ID_NO', type=int)
+       age = click.prompt('Enter patient age')
+       phone_number = click.prompt('Enter patient phone number')
+
+       existing_id = session.query(Patient).filter_by(id_no = id_no).first()
+       if existing_id:
+           click.echo(click.style('Patient already exists {name}', fg = 'red'))
+       else:
+            patient = Patient(name = name, gender = gender, id_no = id_no, age = age,phone_number=phone_number)
+            session.add(patient)
+            session.commit()
+            click.echo(click.style('Patient created successfully', fg = 'green'))
+
+   elif patient_choice == 2:
+       patient_id = click.prompt('Enter Patient ID_NO', type=int)
+       exists = session.query(Patient).filter_by(id_no = patient_id).first()
+
+       if exists:
+           click.echo(click.style(f'Login succesfull: {exists}', fg = 'green'))
+       else:
+           click.echo(click.style('Patient not found please Register', fg = 'red'))
+
+    
 
     
 
@@ -107,5 +128,6 @@ def patient():
 
 if __name__ == '__main__':
     cli.add_command(admin)
+    cli.add_command(patient)
   
     cli()

@@ -25,10 +25,11 @@ class Patient(Base):
     admin_id = Column(Integer(), ForeignKey('admins.id'))
 
     def __repr__ (self):
-        return f'name: {self.name}'\
-        f'id_no: {self.id_no}'\
-        f'gender: {self.gender}'\
-        f'age: {self.age}'\
+        return f'Patient name: {self.name}'\
+        f'  id_no: {self.id_no}'\
+        f'  Gender: {self.gender}'\
+        f'  Age: {self.age}'\
+        f'  Appointment: {self.app_date}'
                   
  # doctors class
      
