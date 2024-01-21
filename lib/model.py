@@ -30,7 +30,7 @@ class Patient(Base):
         f'  Gender: {self.gender}'\
         f'  Age: {self.age}'\
         f'  Appointment: {self.app_date}'\
-        f'  Doctor {self.doctor_id}'
+        f'  Doctor id: {self.doctor_id}'
     
                   
  # doctors class
