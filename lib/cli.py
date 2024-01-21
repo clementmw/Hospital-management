@@ -131,6 +131,7 @@ def patient():
 @cli.command()
 def doctor():
     authenticated = False
+    current_doctor = None
 
     while not authenticated:
         click.echo(click.style('DOCTOR PANEL', fg='blue'))
@@ -156,30 +157,32 @@ def doctor():
 
         elif doctor_choice == 2:
             doctor_id = click.prompt('Enter Doctor UID_NO', type=int)
-            exists = session.query(Doctor).filter_by(id_no=doctor_id).first()
+            current_doctor = session.query(Doctor).filter_by(id_no=doctor_id).first()
 
-            if exists:
-                click.echo(click.style(f'Login successful: {exists.name}', fg='green'))
+            if current_doctor:
+                click.echo(click.style(f'Login successful: {current_doctor.name}', fg='green'))
                 authenticated = True
             else:
                 click.echo(click.style('Doctor not found. Please register.', fg='red'))
-
+    
     while authenticated:
-        click.echo(click.style("You are authenticated as a doctor. Perform actions here.", fg = 'blue'))
-
-        click.echo(click.style('1. Get your patients', fg = 'red'))
+        click.echo(click.style('Perform your functions', fg='red'))
+        click.echo(click.style('1. Get all patients', fg='red'))
 
         doc_choice = click.prompt('Enter your choice (1)', type=int)
 
         if doc_choice == 1:
-            patients = session.query(Patient).filter_by(doctor_id=exists.id)
-            for patient in patients:
-                click.echo(patient)
-        else:
-            click.echo(click.style('Cannot find scheduled appointment', fg = 'red'))
-        break
-        
+            patients = session.query(Patient).filter_by(doctor_id=current_doctor.id).all()
 
+            if patients:
+                for patient in patients:
+                    click.echo(patient)
+            else:
+                click.echo(click.style('No patients found', fg='red'))
+        else:
+            click.echo(click.style('Invalid choice', fg='red'))
+
+   
 
    
 
