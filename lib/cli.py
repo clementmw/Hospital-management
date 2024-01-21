@@ -47,7 +47,8 @@ def admin():
    elif choice == 3:
        doctors = session.query(Doctor).all()
        for doctor in doctors:
-           click.echo(doctor)
+           click.echo(f'{doctor.id}, DR {doctor.name} ')
+          
 
    elif choice == 4:
        patients = session.query(Patient).all()
@@ -85,7 +86,9 @@ def admin():
                 click.echo(click.style('delete aborted', fg = 'red'))
        else:
            click.echo(click.style('Doctor does not exist', fg = 'red'))
-       
+
+ # patient side 
+               
 @cli.command()
 def patient():
    click.echo(click.style('PATIENT PANEL', fg = 'blue'))
@@ -123,7 +126,11 @@ def patient():
        else:
            click.echo(click.style('Patient not found please Register', fg = 'red'))
 
-    
+# doctor side
+           
+@cli.command()
+def doctor():
+    pass
 
     
 
@@ -133,5 +140,6 @@ def patient():
 if __name__ == '__main__':
     cli.add_command(admin)
     cli.add_command(patient)
+    cli.add_command(doctor)
   
     cli()
